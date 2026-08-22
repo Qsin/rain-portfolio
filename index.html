@@ -1869,6 +1869,7 @@
         }
 
         /* Glass Pinboard 灯箱 */
+        .glass-pin img, .glass-lightbox img { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         .glass-lightbox {
             position: fixed;
             inset: 0;
@@ -3632,6 +3633,13 @@
             const board = document.querySelector('.glass-board');
             if (!board) return;
 
+            // 账号运营实录板块图片：禁止右键菜单 / 拖拽保存
+            board.querySelectorAll('img').forEach(img => {
+                img.setAttribute('draggable', 'false');
+                img.addEventListener('contextmenu', e => e.preventDefault());
+                img.addEventListener('dragstart', e => e.preventDefault());
+            });
+
             let lb = document.querySelector('.glass-lightbox');
             if (!lb) {
                 lb = document.createElement('div');
@@ -3646,6 +3654,11 @@
             }
             const imgEl = lb.querySelector('img');
             const closeBtn = lb.querySelector('.glass-lightbox-close');
+
+            // 灯箱放大图：同样禁止右键 / 拖拽保存
+            imgEl.setAttribute('draggable', 'false');
+            imgEl.addEventListener('contextmenu', e => e.preventDefault());
+            imgEl.addEventListener('dragstart', e => e.preventDefault());
 
             function open(src, alt) {
                 imgEl.src = src;
