@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - 个人作品集导航</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            --accent-color: #4f46e5;
+            --bg-main: #fafafa;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 全局渐入动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 首页标题动画 */
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUpDelay {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- 1. 第一页：首屏醒目大字报 (Hero Section) --- */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 24px;
+            background: radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 90%, rgba(79, 70, 229, 0.06) 0%, transparent 40%);
+            animation: fadeIn 1s ease;
+            position: relative;
+        }
+        /* 右下角名字缩写 */
+        .hero-signature {
+            position: absolute;
+            right: 32px;
+            bottom: 32px;
+            font-size: 15px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: slideUp 1s ease 0.3s forwards;
+        }
+
+        .hero-title span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: slideUpDelay 0.8s ease 0.7s forwards;
+        }
+
+        .scroll-hint {
+            animation: bounce 2s infinite;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .scroll-hint:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* --- 2. 横向排列的目录导航栏 (Sticky Nav) --- */
+        .sticky-navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            padding: 0 16px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 12px 0;
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(79, 70, 229, 0.4) rgba(79, 70, 229, 0.05);
+        }
+
+        .nav-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .nav-container::-webkit-scrollbar-track {
+            background: rgba(79, 70, 229, 0.05);
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .nav-container::-webkit-scrollbar-thumb {
+            background: rgba(79, 70, 229, 0.4);
+            border-radius: 4px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(79, 70, 229, 0.6);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 8px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: var(--text-main);
+        }
+
+        /* --- 3. 作品展示主区域 --- */
+        .portfolio-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .category-block {
+            scroll-margin-top: 100px;
+            margin-bottom: 80px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        /* 二级分类小标签（专供 AIGC 板块） */
+        .sub-tab-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .sub-tab {
+            background: #f3f4f6;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .sub-tab.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .sub-tab:hover {
+            background: #e5e7eb;
+        }
+
+        .sub-tab.active:hover {
+            background: var(--accent-color);
+        }
+
+        /* --- 4. 网格布局 (Grid Layout) --- */
+        .waterfall-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 资产图省略号样式 */
+        .asset-ellipsis {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            font-size: 48px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: none;
+        }
+
+        /* 作品卡片外壳 */
+        .portfolio-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            width: calc((100% - 48px) / 3);
+            transition: var(--transition-bounce);
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .portfolio-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 媒体承载区（自适应高度） */
+        .card-media {
+            width: 100%;
+            position: relative;
+            background: #f3f4f6;
+            line-height: 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .card-media video, .card-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* 视频封面样式 */
+        .card-media video {
+            object-fit: cover;
+        }
+
+        /* 💡 新增：针对图片的特异性 CSS 防盗保护（禁止长按、禁止系统菜单、禁止拖拽） */
+        .card-media img, .image-wrapper img {
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+        /* 留白与文字描述区 */
+        .card-body {
+            padding: 24px;
+            background: var(--bg-card);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* AIGC 筛选隐藏样式 */
+        .portfolio-card.hidden {
+            display: none;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        /* --- 5. 弹窗基础样式 (视频与图片通用) --- */
+        .video-modal, .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .video-modal.active, .image-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-modal-content, .image-modal-content {
+            position: relative;
+            width: auto;
+            max-width: 90vw;
+            max-height: 85vh;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.1),
+                1px 3px 6px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transform: scale(0.9) translateY(30px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .video-modal.active .video-modal-content, .image-modal.active .image-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .video-wrapper, .image-wrapper {
+            position: relative;
+            width: auto;
+            max-width: 90vw;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-wrapper video, .image-wrapper img {
+            display: block;
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .video-modal-close, .image-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ffffff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15),
+                        0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-modal-close:hover, .image-modal-close:hover {
+            background: #f5f5f5;
+            transform: scale(1.1);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18),
+                        0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 水印样式合并应用至视频和图片弹窗 */
+        .video-watermark, .image-watermark {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            font-weight: 700;
+            pointer-events: none;
+            user-select: none;
+            z-index: 5;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 加载动画 */
+        .video-loading {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 15;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #06b6d4);
+            border-radius: 2px;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .loading-text {
+            margin-top: 12px;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 区分视频和图片的悬浮提示 */
+        .card-media:hover::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        /* 如果里面包含的是视频，显示点击播放 */
+        .card-media:has(video):hover::after {
+            content: '点击播放';
+        }
+
+        /* 如果里面包含的是图片，显示查看图片 */
+        .card-media:has(img):hover::after {
+            content: '查看图片';
+        }
+
+        /* --- 7. 响应式屏幕适配 --- */
+        @media (max-width: 1024px) {
+            .portfolio-card {
+                width: calc((100% - 24px) / 2);
+            }
+            .asset-ellipsis {
+                right: 20px;
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .portfolio-card {
+                width: 100%;
+            }
+            .hero-title {
+                margin-bottom: 24px;
+            }
+            .category-title {
+                font-size: 24px;
+            }
+            .portfolio-content {
+                padding: 40px 16px;
+            }
+            .asset-ellipsis {
+                right: 10px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-section">
+        <h1 class="hero-title">Hi, 欢迎来到我的作品集<br><span>Welcome to My Portfolio</span></h1>
+        <p class="hero-subtitle">不断探索高品质视觉呈现与内容创作</p>
+        <div class="scroll-hint" onclick="document.getElementById('nav-bar').scrollIntoView({behavior:'smooth'})">
+            <i data-lucide="chevrons-down" size="36"></i>
+        </div>
+        <div class="hero-signature">C.Y.Z</div>
+    </header>
+
+    <nav class="sticky-navbar" id="nav-bar">
+        <div class="nav-container">
+            <a href="#koubo" class="nav-link active">口播类</a>
+            <a href="#vlog" class="nav-link">Vlog</a>
+            <a href="#xinximu" class="nav-link">信息流</a>
+            <a href="#jieshuo" class="nav-link">影视解说</a>
+            <a href="#aigc" class="nav-link">AIGC 探索</a>
+        </div>
+    </nav>
+
+    <main class="portfolio-content">
+        <section class="category-block" id="koubo">
+            <h2 class="category-title">口播类展示</h2>
+            <div class="waterfall-grid">
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=1" src="医美抗衰.mp4"></video> 
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">医美抗衰</h3>
+                        <p class="card-desc">科普医美抗衰知识以及抗衰逻辑，盘点医美避坑要点，适配各年龄段抗初老需求。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=2" src="眼部护理.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">眼部护理</h3>
+                        <p class="card-desc">分享居家护眼手法简单易落地，契合年轻用户受众。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=3" src="咖啡市场.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">咖啡市场</h3>
+                        <p class="card-desc">依托元宇宙新颖形式，科普并探讨当前咖啡市场。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-block" id="vlog">
+            <h2 class="category-title">Vlog</h2>
+            <div class="waterfall-grid">
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=4" src="马术日常Vlog.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">马术日常 Vlog</h3>
+                        <p class="card-desc">生活化实景短片，记录新手马术全体验：打理马匹、穿戴护具、指导骑行，沉浸式展现马术运动的治愈与乐趣。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-block" id="xinximu">
+            <h2 class="category-title">信息流广告</h2>
+            <div class="waterfall-grid">
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=5" src="干发慕斯.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">干发慕斯</h3>
+                        <p class="card-desc">好物实测信息流，实景演示油头急救用法，突出免水洗、快速蓬松发根、持久造型等优势，主打懒人油发刚需产品。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=7" src="玫瑰茶.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">玫瑰茶</h3>
+                        <p class="card-desc">花茶种草短视频，实拍玫瑰冲泡汤色与香气，科普温润养颜功效，适合日常泡水养生饮用。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=6" src="抗静电香氛喷雾.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">抗静电香氛喷雾</h3>
+                        <p class="card-desc">秋冬季节爆款单品，通过实验镜头和清新明快的调色凸显产品的多功能性。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-block" id="jieshuo">
+            <h2 class="category-title">影视解说</h2>
+            <div class="waterfall-grid">
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="痴迷-解说-封面.jpg" src="痴迷-解说.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">痴迷</h3>
+                        <p class="card-desc">影片讲述了一个绝望浪漫者许愿让长期暗恋的好友爱上自己，却引发超自然诅咒，导致对方行为变得异常且危险痴迷的故事。探讨了极端依赖与性别议题。</p>
+                    </div>
+                </div>
+                <!-- 复制下面的模板添加更多视频 -->
+                <!--
+                <div class="portfolio-card">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="" src="你的视频文件名.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">视频标题</h3>
+                        <p class="card-desc">视频描述文案</p>
+                    </div>
+                </div>
+                -->
+            </div>
+        </section>
+
+        <section class="category-block" id="aigc">
+            <h2 class="category-title">AIGC 探索</h2>
+            <div class="sub-tab-container">
+                <button class="sub-tab active" data-sub="all">全部</button>
+                <button class="sub-tab" data-sub="ai-live-action">仿真人短剧</button>
+                <button class="sub-tab" data-sub="ai-overseas">海外短剧</button>
+                <button class="sub-tab" data-sub="ai-comic">AI 漫剧</button>
+                <button class="sub-tab" data-sub="ai-asset">资产图</button>
+            </div>
+
+            <div class="waterfall-grid" id="aigc-grid">
+                <div class="asset-ellipsis">...</div>
+
+                <div class="portfolio-card" data-type="ai-live-action">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="assets/毒手巫医/cover.jpg" src="assets/毒手巫医/video.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">毒手巫医</h3>
+                        <p class="card-desc">AI生成的仿真人短剧，讲述神秘巫医的传奇故事</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-live-action">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="assets/妹妹重生后/cover.jpg" src="assets/妹妹重生后/video.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">妹妹重生后</h3>
+                        <p class="card-desc">重生题材AI短剧，妹妹逆袭人生</p>
+                    </div>
+                </div>
+
+                <!-- 海外短剧占位卡片 - 待添加视频 -->
+                <div class="portfolio-card hidden" data-type="ai-overseas">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="https://picsum.photos/800/450?random=15" src="海外短剧-待添加.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">海外短剧 01</h3>
+                        <p class="card-desc">海外AI短剧作品，待添加视频素材</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-comic">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="assets/邪祀/cover.jpg" src="assets/邪祀/video.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">邪祀</h3>
+                        <p class="card-desc">AI漫画风格动画剧集</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-comic">
+                    <div class="card-media">
+                        <video controls preload="none" controlsList="nodownload" poster="assets/雨巷猫巴士/cover.jpg" src="assets/雨巷猫巴士/video.mp4"></video>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">雨巷猫巴士</h3>
+                        <p class="card-desc">奇幻风格AI漫剧，猫咪巴士的冒险故事</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_01.jpg" alt="资产图1">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 01</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_02.jpg" alt="资产图2">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 02</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_03.png" alt="资产图3">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 03</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card hidden" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_04.png" alt="资产图4">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 04</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card hidden" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_05.jpg" alt="资产图5">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 05</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card hidden" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_06.png" alt="资产图6">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 06</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-card hidden" data-type="ai-asset">
+                    <div class="card-media">
+                        <img loading="lazy" src="assets/资产/asset_07.png" alt="资产图7">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">场景资产 07</h3>
+                        <p class="card-desc">AI生成的高质量场景资产</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 My Portfolio | 内容创作个人博客</p>
+    </footer>
+
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="video-modal-close" onclick="closeVideoModal()">×</button>
+            <div class="video-wrapper">
+                <div class="video-loading" id="videoLoading">
+                    <div class="loading-bar">
+                        <div class="loading-bar-inner"></div>
+                    </div>
+                    <div class="loading-text">加载中...</div>
+                </div>
+                <video id="modalVideo" controls></video>
+                <div class="video-watermark">C.Y.Z</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" onclick="closeImageModal()">×</button>
+            <div class="image-wrapper">
+                <img id="modalImage" src="" alt="大图预览">
+                <div class="image-watermark">C.Y.Z</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 💡 新增：图片特异性防下载 JavaScript 逻辑
+        // 拦截针对 <img> 标签的鼠标右键菜单事件，但不影响视频右键
+        document.addEventListener('contextmenu', function (e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // 拦截针对 <img> 标签的拖拽另存为行为
+        document.addEventListener('dragstart', function (e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // 卡片渐入动画
+        const cards = document.querySelectorAll('.portfolio-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => cardObserver.observe(card));
+
+        // --- AIGC 筛选功能 ---
+        const subTabs = document.querySelectorAll('.sub-tab');
+        const aigcCards = document.querySelectorAll('#aigc-grid .portfolio-card');
+        const assetEllipsis = document.querySelector('.asset-ellipsis');
+
+        subTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelector('.sub-tab.active').classList.remove('active');
+                tab.classList.add('active');
+                const targetType = tab.dataset.sub;
+                
+                aigcCards.forEach(card => {
+                    if (targetType === 'all') {
+                        assetEllipsis.style.display = 'block';
+                        if (card.dataset.type === 'ai-asset' && card.classList.contains('hidden')) {
+                            card.style.display = 'none';
+                        } else {
+                            card.style.display = 'block';
+                        }
+                    } else if (targetType === 'ai-asset') {
+                        assetEllipsis.style.display = 'none';
+                        card.style.display = card.dataset.type === targetType ? 'block' : 'none';
+                    } else {
+                        assetEllipsis.style.display = 'none';
+                        card.style.display = card.dataset.type === targetType ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+
+        // --- 导航滚动高亮 ---
+        const sections = document.querySelectorAll('.category-block');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-30% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                        if(link.classList.contains('active')){
+                            link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // --- 视频播放互斥功能 ---
+        let currentPlayingVideo = null;
+        function handleVideoPlay(video) {
+            if (currentPlayingVideo && currentPlayingVideo !== video) {
+                currentPlayingVideo.pause();
+            }
+            currentPlayingVideo = video;
+        }
+        document.querySelectorAll('video').forEach(video => {
+            video.addEventListener('play', () => handleVideoPlay(video));
+        });
+
+        // --- 视频弹窗逻辑 ---
+        const videoModal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modalVideo');
+        const videoLoading = document.getElementById('videoLoading');
+
+        function openVideoModal(videoSrc) {
+            videoLoading.style.display = 'flex';
+            modalVideo.style.display = 'none';
+            modalVideo.src = videoSrc;
+            setTimeout(() => {
+                videoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 50);
+        }
+
+        function closeVideoModal() {
+            videoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                modalVideo.pause();
+                modalVideo.src = '';
+                videoLoading.style.display = 'flex';
+                modalVideo.style.display = 'none';
+            }, 300);
+        }
+
+        modalVideo.addEventListener('loadeddata', function() {
+            videoLoading.style.display = 'none';
+            modalVideo.style.display = 'block';
+            modalVideo.play();
+        });
+
+        modalVideo.addEventListener('error', function() {
+            videoLoading.innerHTML = '<div class="loading-text">加载失败，请重试</div>';
+        });
+
+        // --- 图片大图弹窗逻辑 ---
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        function openImageModal(imgSrc) {
+            modalImage.src = imgSrc;
+            setTimeout(() => {
+                imageModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 50);
+        }
+
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                modalImage.src = '';
+            }, 300);
+        }
+
+        // --- 条件判定分发逻辑 ---
+        document.querySelectorAll('.card-media').forEach(cardMedia => {
+            cardMedia.addEventListener('click', function(e) {
+                const video = this.querySelector('video');
+                const img = this.querySelector('img');
+                
+                if (video) {
+                    e.preventDefault();
+                    openVideoModal(video.src);
+                } else if (img) {
+                    e.preventDefault();
+                    openImageModal(img.src);
+                }
+            });
+        });
+
+        // 点击遮罩层关闭
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) closeVideoModal();
+        });
+
+        imageModal.addEventListener('click', function(e) {
+            if (e.target === imageModal) closeImageModal();
+        });
+
+        // 全局键盘 ESC 键处理
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (videoModal.classList.contains('active')) closeVideoModal();
+                if (imageModal.classList.contains('active')) closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
