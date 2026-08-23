@@ -23,3 +23,9 @@
 - 另有 tag `v2.0-portfolio`。
 - 已跟踪 29 个文件，含多个 20~24MB 的 mp4（仓库体积较大，首次推送会上传较多数据）。
 - 推送前需先归位到 main（或新建分支）再把 9db4aaf 的工作并入，再 `git push`。
+
+## 域名与访问规范（2026-08-23 确认）
+- **规范域名（canonical）：`ovorain.com`** —— 用户对外统一分享此地址，不主推 www。
+- `www.ovorain.com` 仅作兜底：DNS 指向 qsin.github.io，访问时 301 跳回 `ovorain.com`（当前 Location 为 `http://ovorain.com/`，可选优化为 `https://` 省一次跳转）。
+- 速度：两域名同走 GitHub Pages + Cloudflare 边缘，HTML 速度一致；视频均走腾讯云 COS CDN（同 index.html）。直接给 `ovorain.com` 少一次 301 跳转，体验最快。
+- 结论：维持现状（ovorain.com 为主、www 兜底跳转）即最优，无需改动。
