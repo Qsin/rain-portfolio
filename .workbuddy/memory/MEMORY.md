@@ -3,7 +3,7 @@
 ## 项目身份
 - 个人作品集网站，作者：陈禹璋（C.Y.Z / Qsin），站点域名 ovorain.com。
 - 内容方向：影视解说、信息流买量、口播种草、Vlog、AIGC 短剧、PR/AE 学习。
-- 通过 **Cloudflare Pages** 部署（git 历史含 cloudflare/workers-autoconfig 分支）。
+- 通过 **GitHub Pages** 部署（DNS 经 Cloudflare 代理加速），另有 Cloudflare Worker 项目 rain-portfolio（非站点本身）。git 历史含 cloudflare/workers-autoconfig 分支。
 
 ## 文件角色（重要）
 - `index.html` = 旧版网站（靛蓝/青色渐变风格，已完成）。
@@ -26,6 +26,6 @@
 
 ## 域名与访问规范（2026-08-23 确认）
 - **规范域名（canonical）：`ovorain.com`** —— 用户对外统一分享此地址，不主推 www。
-- `www.ovorain.com` 仅作兜底：DNS 指向 qsin.github.io，访问时 301 跳回 `ovorain.com`（当前 Location 为 `http://ovorain.com/`，可选优化为 `https://` 省一次跳转）。
+- `www.ovorain.com` 仅作兜底：访问时 301 **一步跳回 `https://ovorain.com/`**（2026-08-24 已用 CF Single Redirect 规则实现，省掉原 http→https 多跳）。DNS 仍指向 qsin.github.io。
 - 速度：两域名同走 GitHub Pages + Cloudflare 边缘，HTML 速度一致；视频均走腾讯云 COS CDN（同 index.html）。直接给 `ovorain.com` 少一次 301 跳转，体验最快。
 - 结论：维持现状（ovorain.com 为主、www 兜底跳转）即最优，无需改动。

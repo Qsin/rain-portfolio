@@ -1,6 +1,7 @@
 # 本地凭据 / 缓存，切勿提交
 cf_token.txt
 cos_secret.txt
+r2_secret.txt
 __pycache__/
 *.tmp.ps1
 .env

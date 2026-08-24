@@ -2270,6 +2270,358 @@
             .btn-primary, .btn-secondary { justify-content: center; }
             .ticker-item { font-size: 18px; padding: 8px 18px !important; }
         }
+
+        /* ============ 全站禁止下载 / 复制 / 拖拽保存 ============ */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        /* 表单、文本域、可编辑区与简历弹窗内允许正常选择与复制，避免影响交互 */
+        input, textarea, [contenteditable="true"], [data-modal-body] {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+        /* 媒体元素禁止拖出保存、禁止长按菜单 */
+        img, video, canvas, svg, .lucide {
+            -webkit-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* ============ 资产文件夹卡片（第9位 AIGC 卡槽）· 玻璃拟态风格 ============ */
+        .asset-folder-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            min-height: 260px;
+            background: linear-gradient(145deg, #e8f0ff, #fff0eb);
+        }
+        .asset-folder-card .work-cover {
+            aspect-ratio: unset !important;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent !important;
+        }
+        .asset-folder-card .work-cover::after { display: none; }
+        .asset-folder-card .work-meta {
+            text-align: center;
+            padding: 10px 22px 18px;
+        }
+
+        /* ── 玻璃拟态文件夹图标（参考 macOS / iOS 风格）── */
+        .glass-folder {
+            position: relative;
+            width: 110px;
+            height: 90px;
+            cursor: pointer;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .asset-folder-card:hover .glass-folder {
+            transform: translateY(-6px) scale(1.06);
+        }
+        /* 文件夹标签页（后盖 tab） */
+        .glass-folder-tab {
+            position: absolute;
+            top: 0; left: 4px;
+            width: 44px; height: 22px;
+            background: linear-gradient(135deg, rgba(120,185,255,0.55), rgba(91,160,232,0.65));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            z-index: 1;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: bottom left;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 -2px 8px rgba(31,64,230,0.12);
+        }
+        /* 文件夹主体（前盖） */
+        .glass-folder-body {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 72px;
+            background: linear-gradient(160deg,
+                rgba(120,185,255,0.42),
+                rgba(212,246,61,0.25),
+                rgba(255,94,77,0.20));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255,255,255,0.55);
+            border-radius: 16px 16px 22px 16px;
+            box-shadow:
+                0 8px 32px rgba(31,64,230,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.6),
+                inset 0 -2px 8px rgba(0,0,0,0.04);
+            transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+        /* 文件夹内部装饰线（模拟纸张层叠感） */
+        .glass-folder-body::before {
+            content: '';
+            position: absolute;
+            top: 14px; left: 10px; right: 10px;
+            height: 2px;
+            background: rgba(255,255,255,0.35);
+            border-radius: 1px;
+        }
+        .glass-folder-body::after {
+            content: '';
+            position: absolute;
+            top: 22px; left: 14px; right: 14px;
+            height: 1.5px;
+            background: rgba(255,255,255,0.22);
+            border-radius: 1px;
+        }
+        /* 文件夹内的小图标 */
+        .glass-folder-icon {
+            position: absolute;
+            bottom: 18px; right: 16px;
+            width: 26px; height: 26px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .asset-folder-card:hover .glass-folder-icon { opacity: 0.85; }
+
+        /* hover → 标签张开（向后旋转 + 上移 + 变色） */
+        .asset-folder-card:hover .glass-folder-tab {
+            transform: rotate(-38deg) translateY(-8px) translateX(-4px);
+            background: linear-gradient(135deg, rgba(255,94,77,0.50), rgba(255,140,100,0.60));
+            box-shadow: 0 4px 20px rgba(255,94,77,0.25), inset 0 1px 0 rgba(255,255,255,0.5);
+        }
+        /* hover → 主体变亮变大 */
+        .asset-folder-card:hover .glass-folder-body {
+            background: linear-gradient(160deg,
+                rgba(120,185,255,0.52),
+                rgba(212,246,61,0.35),
+                rgba(255,94,77,0.28));
+            box-shadow:
+                0 14px 40px rgba(31,64,230,0.22),
+                inset 0 1px 0 rgba(255,255,255,0.7),
+                inset 0 -2px 8px rgba(0,0,0,0.05);
+        }
+
+        .folder-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.04em;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .asset-folder-card:hover .folder-label { opacity: 1; }
+        .folder-hint {
+            font-size: 11px;
+            color: var(--sky-deep);
+            background: rgba(91, 160, 232, 0.12);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        /* ============ 资产画廊 · 毛玻璃模态框 ============ */
+        .asset-gallery-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.68);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .asset-gallery-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .asset-gallery-box {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 88vh;
+            background: rgba(255, 255, 255, 0.78);
+            border: 3px solid var(--text-dark);
+            border-radius: 28px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), 8px 8px 0 var(--sky-blue);
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .asset-gallery-overlay.show .asset-gallery-box {
+            transform: scale(1) translateY(0);
+        }
+        .asset-gallery-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .asset-gallery-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .asset-gallery-title em {
+            font-family: 'Dancing Script', cursive;
+            font-style: normal;
+            color: var(--klien-blue);
+            font-size: 0.85em;
+        }
+        .asset-gallery-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--sky-deep);
+            background: var(--bg-light);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+        .asset-gallery-close {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid var(--text-dark);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 3px 3px 0 var(--text-dark);
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+        .asset-gallery-close:hover {
+            transform: translateY(-2px) rotate(-8deg);
+            box-shadow: 4px 5px 0 var(--coral-pink);
+        }
+        .asset-gallery-scroll {
+            overflow-y: auto;
+            max-height: calc(88vh - 72px);
+            padding: 24px;
+        }
+        .asset-gallery-scroll::-webkit-scrollbar { width: 8px; }
+        .asset-gallery-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.04); border-radius: 4px; }
+        .asset-gallery-scroll::-webkit-scrollbar-thumb { background: var(--sky-blue); border-radius: 4px; }
+        .asset-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .asset-gallery-item {
+            border: 2px solid var(--text-dark);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 4px 4px 0 rgba(120, 185, 255, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .asset-gallery-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 8px 10px 0 var(--klien-blue);
+        }
+        .asset-gallery-item img {
+            width: 100%;
+            display: block;
+            aspect-ratio: auto;
+            object-fit: cover;
+            min-height: 180px;
+        }
+        .asset-gallery-name {
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        @media (max-width: 900px) {
+            .asset-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        }
+        @media (max-width: 560px) {
+            .asset-gallery-grid { grid-template-columns: 1fr; }
+            .asset-gallery-scroll { padding: 16px; }
+        }
+
+        /* ============ 资产图片放大灯箱（画廊内点击单图） ============ */
+        .asset-img-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .asset-img-lightbox.show { opacity: 1; visibility: visible; }
+        .asset-img-lightbox-inner {
+            position: relative;
+            max-width: 94vw;
+            max-height: 90vh;
+            background: rgba(255, 255, 255, 0.85);
+            border: 3px solid var(--text-dark);
+            border-radius: 24px;
+            padding: 14px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 6px 6px 0 var(--sky-blue);
+            transform: scale(0.88) translateY(16px);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .asset-img-lightbox.show .asset-img-lightbox-inner {
+            transform: scale(1) translateY(0);
+        }
+        .asset-img-lightbox-inner img {
+            display: block;
+            max-width: 100%;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .asset-img-lb-close {
+            position: absolute;
+            top: -18px; right: -18px;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--text-dark);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 3px 3px 0 var(--text-dark);
+            z-index: 2;
+            transition: all 0.25s ease;
+        }
+        .asset-img-lb-close:hover {
+            transform: translateY(-2px) rotate(-8deg);
+            box-shadow: 4px 5px 0 var(--coral-pink);
+        }
+        .asset-img-lb-name {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
     </style>
 </head>
 <body>
@@ -2604,6 +2956,29 @@
                     <h3>雨巷猫巴士</h3>
                     <p>宫崎骏氛围 · 治愈系运镜+配乐</p>
                     <div class="work-tags"><span>AIGC</span><span>氛围感</span><span>短片</span></div>
+                </div>
+            </div>
+
+            <!-- ============ 资产文件夹（第9位 AIGC 卡槽）· 玻璃拟态 ============ -->
+            <div class="work-card asset-folder-card reveal-item" data-cat="aigc" id="assetFolderCard">
+                <div class="work-cover">
+                    <div class="glass-folder">
+                        <!-- 标签页（后盖） -->
+                        <div class="glass-folder-tab"></div>
+                        <!-- 主体（前盖） -->
+                        <div class="glass-folder-body">
+                            <!-- 内部小图标装饰 -->
+                            <svg class="glass-folder-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="#1F40E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="13,2 13,9 20,9" stroke="#1F40E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="work-meta">
+                    <h3>AI资产库</h3>
+                    <p>场景 · 角色 · 概念设计</p>
+                    <div class="work-tags"><span class="folder-hint">点击浏览 9 项资产</span></div>
                 </div>
             </div>
 
@@ -3024,6 +3399,7 @@
                     <img src="游戏账号数据/蛇戒数据.jpg" alt="蛇戒数据">
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -3687,6 +4063,33 @@
         })();
 
         /* ============================================================
+         * 6.5.2 全站禁止下载 · 右键 / 拖拽 / 复制 / 另存为
+         * ============================================================ */
+        (function siteProtect() {
+            // 1) 禁止右键菜单：屏蔽“图片/视频另存为”“网页另存为”
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // 2) 禁止拖拽：屏蔽拖到桌面 / 文件夹下载
+            document.addEventListener('dragstart', e => e.preventDefault());
+
+            // 3) 所有带控制条的视频隐藏原生“下载”按钮
+            document.querySelectorAll('video[controls]').forEach(v => v.setAttribute('controlsList', 'nodownload'));
+
+            // 4) 禁止复制 / 剪切 / 选中文本（输入框、文本域、简历弹窗除外）
+            const inEditable = (el) =>
+                el && el.closest && el.closest('input, textarea, [contenteditable="true"], [data-modal-body]');
+            ['copy', 'cut', 'selectstart'].forEach(evt => {
+                document.addEventListener(evt, e => { if (!inEditable(e.target)) e.preventDefault(); });
+            });
+
+            // 5) 拦截“保存网页 / 查看源码 / 打印”快捷键（Ctrl/Cmd + S / U / P）
+            document.addEventListener('keydown', e => {
+                const k = (e.key || '').toLowerCase();
+                if ((e.ctrlKey || e.metaKey) && ['s', 'u', 'p'].includes(k)) e.preventDefault();
+            });
+        })();
+
+        /* ============================================================
          * 6.6 联系合作 · 微信 / 简历弹窗
          * ============================================================ */
         (function contactModal() {
@@ -3936,6 +4339,130 @@
                 }
             }, { passive: true });
         })();
+    </script>
+
+    <!-- ============ 资产画廊模态框 ============ -->
+    <div class="asset-gallery-overlay" id="assetGallery">
+        <div class="asset-gallery-box">
+            <div class="asset-gallery-header">
+                <div class="asset-gallery-title">
+                    <svg width="22" height="22" viewBox="0 0 100 80" fill="none" aria-hidden="true">
+                        <path fill="#5BA0E8" stroke="#111" stroke-width="3" stroke-linejoin="round" d="M6,16 L6,12 C6,9.8 7.8,8 10,8 L34,8 L40,16 L94,16 C96.2,16 98,17.8 98,20 L98,26 L6,26 Z"/>
+                        <path fill="#78B9FF" stroke="#111" stroke-width="3" stroke-linejoin="round" d="M6,26 L94,26 C96.2,26 98,27.8 98,30 L98,68 C98,70.2 96.2,72 94,72 L6,72 C3.8,72 2,70.2 2,68 L2,30 C2,27.8 3.8,26 6,26 Z"/>
+                    </svg>
+                    AI资产库 <em>Asset Gallery</em>
+                    <span class="asset-gallery-count" id="assetCount">9 项</span>
+                </div>
+                <button class="asset-gallery-close" id="assetGalleryClose" aria-label="关闭画廊">
+                    <i data-lucide="x" width="20" height="20"></i>
+                </button>
+            </div>
+            <div class="asset-gallery-scroll">
+                <div class="asset-gallery-grid" id="assetGrid">
+                    <!-- 由 JS 动态填充 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ 资产图片放大灯箱（点击画廊内单图） ============ -->
+    <div class="asset-img-lightbox" id="assetImgLightbox">
+        <div class="asset-img-lightbox-inner">
+            <button class="asset-img-lb-close" aria-label="关闭大图">
+                <i data-lucide="x" width="18" height="18"></i>
+            </button>
+            <img src="" alt="" id="assetImgLbImg">
+            <div class="asset-img-lb-name" id="assetImgLbName"></div>
+        </div>
+    </div>
+
+    <script>
+    /* ============ 资产文件夹 · 点击打开画廊 + 图片放大 ============ */
+    (function initAssetFolder() {
+        var card   = document.getElementById('assetFolderCard');
+        var overlay= document.getElementById('assetGallery');
+        var grid   = document.getElementById('assetGrid');
+        var closeBtn= document.getElementById('assetGalleryClose');
+        // 图片放大灯箱
+        var imgLb  = document.getElementById('assetImgLightbox');
+        var imgLbImg = document.getElementById('assetImgLbImg');
+        var imgLbName = document.getElementById('assetImgLbName');
+        var imgLbClose = imgLb ? imgLb.querySelector('.asset-img-lb-close') : null;
+
+        if (!card || !overlay || !grid) return;
+
+        // 资产列表（宴会大厅 / 宴会大厅反打 相邻；02/03/07 已移除并重新编号）
+        var assets = [
+            { src: 'assets/资产/角色三视图古罗马.png', name: '角色三视图 · 古罗马' },
+            { src: 'assets/资产/宴会大厅.png',         name: '宴会大厅' },
+            { src: 'assets/资产/宴会大厅反打.png',     name: '宴会大厅反打' },
+            { src: 'assets/资产/暴风藏身屋.png',       name: '暴风藏身屋' },
+            { src: 'assets/资产/49-投影-掩盖真相之地.png', name: '投影 · 掩盖真相之地' },
+            { src: 'assets/资产/asset_01.jpg',          name: '视觉资产 01' },
+            { src: 'assets/资产/asset_02.png',          name: '视觉资产 02' },
+            { src: 'assets/资产/asset_03.jpg',          name: '视觉资产 03' },
+            { src: 'assets/资产/asset_04.png',          name: '视觉资产 04' }
+        ];
+
+        // 填充网格（每张图可点击放大）
+        var html = '';
+        for (var i = 0; i < assets.length; i++) {
+            html += '<div class="asset-gallery-item" data-src="' + assets[i].src + '" data-name="' + assets[i].name + '">'
+                + '<img src="' + assets[i].src + '" alt="' + assets[i].name + '" loading="lazy">'
+                + '<div class="asset-gallery-name">' + assets[i].name + '</div>'
+                + '</div>';
+        }
+        grid.innerHTML = html;
+
+        // ── 打开画廊 ──
+        card.addEventListener('click', function() {
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            if (window.lucide) lucide.createIcons();
+        });
+
+        // ── 关闭画廊 ──
+        function closeGallery() {
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        closeBtn.addEventListener('click', closeGallery);
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) closeGallery();
+        });
+
+        // ── 点击画廊内图片 → 放大查看 ──
+        grid.addEventListener('click', function(e) {
+            var item = e.target.closest('.asset-gallery-item');
+            if (!item || !imgLb || !imgLbImg || !imgLbName) return;
+            var src  = item.getAttribute('data-src');
+            var name = item.getAttribute('data-name') || '';
+            imgLbImg.src = src;
+            imgLbImg.alt = name;
+            imgLbName.textContent = name;
+            imgLb.classList.add('show');
+            if (window.lucide && imgLbClose) lucide.createIcons({ nodes: [imgLbClose] });
+        });
+
+        // ── 关闭图片放大灯箱 ──
+        function closeImgLb() {
+            if (imgLb) imgLb.classList.remove('show');
+        }
+        if (imgLbClose) imgLbClose.addEventListener('click', closeImgLb);
+        if (imgLb) imgLb.addEventListener('click', function(e) {
+            if (e.target === imgLb) closeImgLb();
+        });
+
+        // ESC 关闭（优先关内层灯箱，再关外层画廊）
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            if (imgLb && imgLb.classList.contains('show')) {
+                closeImgLb();
+            } else if (overlay.classList.contains('show')) {
+                closeGallery();
+            }
+        });
+    })();
     </script>
 </body>
 </html>
