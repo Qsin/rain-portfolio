@@ -6,3 +6,5 @@ __pycache__/
 *.tmp.ps1
 .env
 cf_prefer_local.ps1
+# WorkBuddy 内部目录（项目记忆、笔记，不公开）
+.workbuddy/
