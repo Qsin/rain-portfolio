@@ -5,3 +5,4 @@ r2_secret.txt
 __pycache__/
 *.tmp.ps1
 .env
+cf_prefer_local.ps1
