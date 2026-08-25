@@ -2494,6 +2494,25 @@
             padding: 4px 12px;
             border-radius: 999px;
         }
+        .asset-gallery-tab {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(17,17,17,0.45);
+            padding: 4px 14px;
+            border-radius: 8px;
+            cursor: default;
+            transition: color 0.2s, background 0.2s;
+        }
+        .asset-gallery-tab.active {
+            color: var(--coral-pink);
+            background: rgba(255,94,77,0.08);
+        }
+        .asset-gallery-tab-divider {
+            color: rgba(17,17,17,0.2);
+            font-weight: 400;
+            user-select: none;
+        }
         .asset-gallery-close {
             width: 40px; height: 40px;
             border-radius: 50%;
@@ -2512,6 +2531,7 @@
         .asset-gallery-scroll {
             overflow-y: auto;
             max-height: calc(88vh - 72px);
+            min-height: 520px;
             padding: 24px;
         }
         .asset-gallery-scroll::-webkit-scrollbar { width: 8px; }
@@ -2583,10 +2603,14 @@
             background: rgba(255, 255, 255, 0.85);
             border: 3px solid var(--text-dark);
             border-radius: 24px;
-            padding: 14px;
+            padding: 14px 14px 18px;
             box-shadow: 0 30px 80px rgba(0,0,0,0.4), 6px 6px 0 var(--sky-blue);
             transform: scale(0.88) translateY(16px);
             transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .asset-img-lightbox.show .asset-img-lightbox-inner {
             transform: scale(1) translateY(0);
@@ -2617,10 +2641,11 @@
         }
         .asset-img-lb-name {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 13px;
             font-weight: 700;
             color: var(--text-dark);
+            flex-shrink: 0;
         }
 
         /* 图片灯箱 · 左右切换按钮 */
@@ -3014,7 +3039,7 @@
                     </div>
                 </div>
                 <div class="work-meta">
-                    <h3>AI资产库</h3>
+                    <h3>部分数据&资产库</h3>
                     <p>场景 · 角色 · 概念设计</p>
                     <div class="work-tags"><span class="folder-hint">点击浏览 9 项资产</span></div>
                 </div>
@@ -4388,7 +4413,10 @@
                         <path fill="#5BA0E8" stroke="#111" stroke-width="3" stroke-linejoin="round" d="M6,16 L6,12 C6,9.8 7.8,8 10,8 L34,8 L40,16 L94,16 C96.2,16 98,17.8 98,20 L98,26 L6,26 Z"/>
                         <path fill="#78B9FF" stroke="#111" stroke-width="3" stroke-linejoin="round" d="M6,26 L94,26 C96.2,26 98,27.8 98,30 L98,68 C98,70.2 96.2,72 94,72 L6,72 C3.8,72 2,70.2 2,68 L2,30 C2,27.8 3.8,26 6,26 Z"/>
                     </svg>
-                    AI资产库 <em>Asset Gallery</em>
+                    <span class="asset-gallery-tab active">AI资产库</span>
+                    <span class="asset-gallery-tab-divider">|</span>
+                    <span class="asset-gallery-tab">部分播放量数据</span>
+                    <em style="display:none">Asset Gallery</em>
                     <span class="asset-gallery-count" id="assetCount">9 项</span>
                 </div>
                 <button class="asset-gallery-close" id="assetGalleryClose" aria-label="关闭画廊">
@@ -4397,7 +4425,10 @@
             </div>
             <div class="asset-gallery-scroll">
                 <div class="asset-gallery-grid" id="assetGrid">
-                    <!-- 由 JS 动态填充 -->
+                    <!-- AI资产库 · 由 JS 动态填充 -->
+                </div>
+                <div class="asset-gallery-grid" id="dramaGrid" style="display:none;">
+                    <!-- 部分播放量数据 · 由 JS 动态填充 -->
                 </div>
             </div>
         </div>
@@ -4460,6 +4491,39 @@
         }
         grid.innerHTML = html;
 
+        // ── 部分播放量数据（AIGC 短剧精选）──
+        var dramaGrid = document.getElementById('dramaGrid');
+        var dramas = [
+            { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/部分播放量/白狮选择她.png',     name: '白狮选择她' },
+            { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/部分播放量/荆木庄园的血誓.png', name: '荆木庄园的血誓' },
+            { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/部分播放量/末龙之烬.png',       name: '末龙之烬' }
+        ];
+        if (dramaGrid) {
+            var dhtml = '';
+            for (var j = 0; j < dramas.length; j++) {
+                dhtml += '<div class="asset-gallery-item" data-src="' + dramas[j].src + '" data-name="' + dramas[j].name + '">'
+                    + '<img src="' + dramas[j].src + '" alt="' + dramas[j].name + '" loading="lazy">'
+                    + '<div class="asset-gallery-name">' + dramas[j].name + '</div>'
+                    + '</div>';
+            }
+            dramaGrid.innerHTML = dhtml;
+        }
+
+        // ── 标签切换 ──
+        var tabs = document.querySelectorAll('.asset-gallery-tab');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                tab.classList.add('active');
+                var isDrama = tab.textContent.indexOf('部分') !== -1;
+                grid.style.display       = isDrama ? 'none' : '';
+                if (dramaGrid) dramaGrid.style.display = isDrama ? '' : 'none';
+                // 切换标签时更新 count
+                var cntEl = document.getElementById('assetCount');
+                if (cntEl) cntEl.textContent = isDrama ? (dramas.length + ' 项') : (assets.length + ' 项');
+            });
+        });
+
         // ── 打开画廊 ──
         card.addEventListener('click', function() {
             overlay.classList.add('show');
@@ -4493,6 +4557,21 @@
             showImg(src, name);
         });
 
+        // dramaGrid 也支持点击放大
+        if (dramaGrid) {
+            dramaGrid.addEventListener('click', function(e) {
+                var item = e.target.closest('.asset-gallery-item');
+                if (!item || !imgLb || !imgLbImg || !imgLbName) return;
+                var src  = item.getAttribute('data-src');
+                var name = item.getAttribute('data-name') || '';
+                var items = dramaGrid.querySelectorAll('.asset-gallery-item');
+                for (var k = 0; k < items.length; k++) {
+                    if (items[k] === item) { currentIdx = k; break; }
+                }
+                showImg(src, name);
+            });
+        }
+
         // 显示指定图片
         function showImg(src, name) {
             imgLbImg.src = src;
@@ -4502,12 +4581,14 @@
             if (window.lucide) lucide.createIcons({ nodes: [imgLb.querySelectorAll('.asset-img-lb-nav')] });
         }
 
-        // 切换到指定索引（循环）
+        // 切换到指定索引（循环，自动识别当前标签）
         function gotoImg(delta) {
-            if (currentIdx < 0 || !assets.length) return;
-            var total = assets.length;
+            var isDrama = dramaGrid && dramaGrid.style.display !== 'none';
+            var list = isDrama ? dramas : assets;
+            if (currentIdx < 0 || !list.length) return;
+            var total = list.length;
             currentIdx = (currentIdx + delta + total) % total;
-            showImg(assets[currentIdx].src, assets[currentIdx].name);
+            showImg(list[currentIdx].src, list[currentIdx].name);
         }
 
         // ── 关闭图片放大灯箱 ──
