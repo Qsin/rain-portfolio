@@ -2622,6 +2622,44 @@
             font-weight: 700;
             color: var(--text-dark);
         }
+
+        /* 图片灯箱 · 左右切换按钮 */
+        .asset-img-lb-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(17, 17, 17, 0.35);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2;
+            transition: all 0.25s ease;
+            opacity: 0.7;
+        }
+        .asset-img-lb-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(17, 17, 17, 0.55);
+        }
+        .asset-img-lb-nav.prev { left: 10px; }
+        .asset-img-lb-nav.next { right: 10px; }
+        .asset-img-lb-nav svg {
+            width: 20px; height: 20px;
+            stroke: rgba(17, 17, 17, 0.7);
+            stroke-width: 2;
+        }
+
+        /* 图片区域容器（用于定位导航按钮） */
+        .asset-img-lb-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -4371,7 +4409,15 @@
             <button class="asset-img-lb-close" aria-label="关闭大图">
                 <i data-lucide="x" width="18" height="18"></i>
             </button>
-            <img src="" alt="" id="assetImgLbImg">
+            <div class="asset-img-lb-wrap">
+                <img src="" alt="" id="assetImgLbImg">
+                <button class="asset-img-lb-nav prev" aria-label="上一张">
+                    <i data-lucide="chevron-left" width="20" height="20"></i>
+                </button>
+                <button class="asset-img-lb-nav next" aria-label="下一张">
+                    <i data-lucide="chevron-right" width="20" height="20"></i>
+                </button>
+            </div>
             <div class="asset-img-lb-name" id="assetImgLbName"></div>
         </div>
     </div>
@@ -4391,11 +4437,11 @@
 
         if (!card || !overlay || !grid) return;
 
-        // 资产列表（宴会大厅 / 宴会大厅反打 相邻；02/03/07 已移除并重新编号）
+        // 资产列表（宴会大厅 / 宴会大厅-有人版 相邻；02/03/07 已移除并重新编号）
         var assets = [
             { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/角色三视图古罗马.png', name: '角色三视图 · 古罗马' },
             { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/宴会大厅.png',         name: '宴会大厅' },
-            { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/宴会大厅反打.png',     name: '宴会大厅反打' },
+            { src: 'assets/资产/宴会大厅-有人版.png',  name: '宴会大厅-有人版' },
             { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/暴风藏身屋.png',       name: '暴风藏身屋' },
             { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/49-投影-掩盖真相之地.png', name: '投影 · 掩盖真相之地' },
             { src: 'https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/资产/asset_01.jpg',          name: '视觉资产 01' },
@@ -4432,33 +4478,64 @@
         });
 
         // ── 点击画廊内图片 → 放大查看 ──
+        var currentIdx = -1; // 当前放大图的索引
+
         grid.addEventListener('click', function(e) {
             var item = e.target.closest('.asset-gallery-item');
             if (!item || !imgLb || !imgLbImg || !imgLbName) return;
             var src  = item.getAttribute('data-src');
             var name = item.getAttribute('data-name') || '';
+            // 记录当前索引
+            var items = grid.querySelectorAll('.asset-gallery-item');
+            for (var k = 0; k < items.length; k++) {
+                if (items[k] === item) { currentIdx = k; break; }
+            }
+            showImg(src, name);
+        });
+
+        // 显示指定图片
+        function showImg(src, name) {
             imgLbImg.src = src;
             imgLbImg.alt = name;
             imgLbName.textContent = name;
             imgLb.classList.add('show');
-            if (window.lucide && imgLbClose) lucide.createIcons({ nodes: [imgLbClose] });
-        });
+            if (window.lucide) lucide.createIcons({ nodes: [imgLb.querySelectorAll('.asset-img-lb-nav')] });
+        }
+
+        // 切换到指定索引（循环）
+        function gotoImg(delta) {
+            if (currentIdx < 0 || !assets.length) return;
+            var total = assets.length;
+            currentIdx = (currentIdx + delta + total) % total;
+            showImg(assets[currentIdx].src, assets[currentIdx].name);
+        }
 
         // ── 关闭图片放大灯箱 ──
         function closeImgLb() {
             if (imgLb) imgLb.classList.remove('show');
+            currentIdx = -1;
         }
         if (imgLbClose) imgLbClose.addEventListener('click', closeImgLb);
         if (imgLb) imgLb.addEventListener('click', function(e) {
             if (e.target === imgLb) closeImgLb();
         });
 
-        // ESC 关闭（优先关内层灯箱，再关外层画廊）
+        // ── 左右切换按钮 ──
+        var prevBtn = imgLb ? imgLb.querySelector('.asset-img-lb-nav.prev') : null;
+        var nextBtn = imgLb ? imgLb.querySelector('.asset-img-lb-nav.next') : null;
+        if (prevBtn) prevBtn.addEventListener('click', function(e) { e.stopPropagation(); gotoImg(-1); });
+        if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); gotoImg(1); });
+
+        // ESC / 左右箭头
         document.addEventListener('keydown', function(e) {
-            if (e.key !== 'Escape') return;
+            // 图片灯箱打开时：左右箭头切换，ESC 关闭图片灯箱
             if (imgLb && imgLb.classList.contains('show')) {
-                closeImgLb();
-            } else if (overlay.classList.contains('show')) {
+                if (e.key === 'Escape') { closeImgLb(); return; }
+                if (e.key === 'ArrowLeft') { gotoImg(-1); e.preventDefault(); return; }
+                if (e.key === 'ArrowRight') { gotoImg(1); e.preventDefault(); return; }
+            }
+            // 画廊打开时（但图片灯箱未开）：ESC 关闭画廊
+            if (e.key === 'Escape' && overlay.classList.contains('show')) {
                 closeGallery();
             }
         });
