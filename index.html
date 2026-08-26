@@ -2212,7 +2212,46 @@
         @media (max-width: 640px) {
             .back-to-top { right: 16px; bottom: 16px; width: 46px; height: 46px; }
             .back-to-top i { width: 18px; height: 18px; }
+            .side-nav { display: none; }
         }
+
+        /* ============ Side Nav · 右侧固定导航（Instagram 风格圆点，由深至浅） ============ */
+        .side-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .side-nav.visible { opacity: 1; pointer-events: auto; }
+        .side-nav-item { cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; }
+        .side-nav-dot {
+            width: 11px; height: 11px; border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.25);
+            background: transparent;
+            transition: all 0.25s ease; flex-shrink: 0;
+        }
+        .side-nav-item:hover .side-nav-dot {
+            border-color: rgba(91,160,232,0.5);
+            transform: scale(1.25);
+        }
+        .side-nav-item.active .side-nav-dot {
+            transform: scale(1.35);
+            box-shadow: 0 2px 8px rgba(91,160,232,0.3);
+        }
+        /* 由深至浅：取色自 Selected Works 标题蓝 */
+        .side-nav-item:nth-child(1).active .side-nav-dot { background: #5BA0E8; border-color: #5BA0E8; }
+        .side-nav-item:nth-child(2).active .side-nav-dot { background: #78B9FF; border-color: #78B9FF; }
+        .side-nav-item:nth-child(3).active .side-nav-dot { background: #A2D2FF; border-color: #A2D2FF; }
+        .side-nav-item:nth-child(4).active .side-nav-dot { background: #C8E3FF; border-color: #C8E3FF; }
+        .side-nav-item:nth-child(5).active .side-nav-dot { background: #E5F1FF; border-color: #C8DFFF; }
 
         /* 响应式：作品 Grid 2列/1列 */
         @media (max-width: 900px) {
@@ -3868,6 +3907,15 @@
         </div>
     </section>
 
+    <!-- ============ 右侧固定导航（Instagram 风格圆点，滚动 > 400px 显示） ============ -->
+    <nav class="side-nav" id="sideNav" aria-label="页面快速导航">
+        <div class="side-nav-item" data-target="works"><span class="side-nav-dot"></span></div>
+        <div class="side-nav-item" data-target="journey"><span class="side-nav-dot"></span></div>
+        <div class="side-nav-item" data-target="graphic-design"><span class="side-nav-dot"></span></div>
+        <div class="side-nav-item" data-target="pinboard"><span class="side-nav-dot"></span></div>
+        <div class="side-nav-item" data-target="contact"><span class="side-nav-dot"></span></div>
+    </nav>
+
     <!-- ============ 一键回到顶部（右下角悬浮按钮，滚动 > 300px 自动淡入） ============ -->
     <button class="back-to-top" id="backToTop" aria-label="回到顶部">
         <i data-lucide="arrow-up"></i>
@@ -4669,6 +4717,60 @@
             });
 
             onScroll();
+        })();
+
+        /* ============================================================
+         * 7.5 Side Nav · 右侧固定导航（滚动显隐 + 点击跳转 + 滚动高亮）
+         * ============================================================ */
+        (function initSideNav() {
+            const nav = document.getElementById('sideNav');
+            if (!nav) return;
+            const items = nav.querySelectorAll('.side-nav-item');
+            const sections = [];
+            items.forEach(item => {
+                const id = item.dataset.target;
+                const el = document.getElementById(id);
+                if (el) sections.push({ id, el, item });
+            });
+
+            function updateVisibility() {
+                const y = window.scrollY || document.documentElement.scrollTop || 0;
+                nav.classList.toggle('visible', y > 400);
+            }
+
+            function highlightActive() {
+                const y = window.scrollY || document.documentElement.scrollTop || 0;
+                const h = window.innerHeight;
+                let activeIdx = 0;
+                for (let i = 0; i < sections.length; i++) {
+                    const rect = sections[i].el.getBoundingClientRect();
+                    if (rect.top <= h * 0.4) activeIdx = i;
+                }
+                items.forEach((item, i) => item.classList.toggle('active', i === activeIdx));
+            }
+
+            items.forEach(item => {
+                item.addEventListener('click', () => {
+                    const target = document.getElementById(item.dataset.target);
+                    if (!target) return;
+                    const top = target.getBoundingClientRect().top + window.scrollY - 20;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                    const dot = item.querySelector('.side-nav-dot');
+                    dot.style.transform = 'scale(1.5)';
+                    setTimeout(() => { dot.style.transform = ''; }, 200);
+                });
+            });
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => { updateVisibility(); highlightActive(); ticking = false; });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            updateVisibility();
+            highlightActive();
         })();
 
         /* ============================================================
