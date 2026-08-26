@@ -11,5 +11,5 @@ cf_prefer_local.ps1
 # 本地脚本 / 归档（敏感文件+过时文件，不公开）
 scripts/
 archive/
-# 媒体资源只走腾讯云 COS（见 index.html 中的 cos.ap-guangzhou.myqcloud.com 引用），不进 git
-assets/graphic-design/
+# 媒体资源主走腾讯云 COS 加速；graphic-design 图同时入库作备份（避免丢失）
+# 说明：站点运行时读 COS URL，git 仅作冗余备份
