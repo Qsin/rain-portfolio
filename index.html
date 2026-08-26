@@ -799,7 +799,7 @@
             position: relative;
             z-index: 20;
             height: 160px;
-            background: #FFFCF6;
+            background: linear-gradient(180deg, #F4F7FB 0%, #FFFCF6 100%);
             overflow: hidden;
             border-top: 2px solid var(--text-dark);
             border-bottom: 2px solid var(--text-dark);
@@ -986,7 +986,7 @@
         /* ============ 作品区 CSS：标题 / Tab栏 / Bento Grid / 卡片 / Hover / Modal / Contact / Footer ============ */
         .works-section {
             padding: 120px 24px 140px;
-            background: var(--bg-white);
+            background: linear-gradient(180deg, #FFFCF6 0%, var(--bg-white) 35%, var(--bg-white) 100%);
             position: relative;
         }
         .works-head {
@@ -1492,7 +1492,7 @@
         /* ============ Process 服务/流程展示（风格4文件夹索引卡片） ============ */
         .process-section {
             padding: 100px 24px 120px;
-            background: var(--bg-white);
+            background: linear-gradient(180deg, #EAF3FF 0%, var(--bg-white) 42%, #F3F7FF 100%);
             position: relative;
             z-index: 2;
             overflow: hidden;
@@ -1928,7 +1928,7 @@
         /* ============ Contact 联系区 ============ */
         .contact-section {
             padding: 120px 24px 80px;
-            background: linear-gradient(180deg, var(--bg-white) 0%, #D8EAFF 50%, #C7E2FF 100%);
+            background: linear-gradient(180deg, #D6ECFF 0%, #D8EAFF 35%, #C7E2FF 100%);
             position: relative;
             overflow: hidden;
         }
@@ -2685,6 +2685,339 @@
             display: inline-block;
             max-width: 100%;
         }
+
+        /* ============ 05. 电商平面设计（轻量卡片轮播） ============ */
+        .graphic-design-section {
+            position: relative;
+            padding: 120px 0 140px;
+            background: linear-gradient(180deg, #F3F7FF 0%, #EDF4FF 32%, #F7FAFF 60%, var(--bg-light) 100%);
+            overflow: hidden;
+        }
+        .graphic-design-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 12% 22%, rgba(120, 185, 255, 0.14) 0%, transparent 32%),
+                radial-gradient(circle at 88% 78%, rgba(120, 185, 255, 0.10) 0%, transparent 32%),
+                radial-gradient(circle at 52% 50%, rgba(255, 94, 77, 0.04) 0%, transparent 42%);
+            z-index: 0;
+        }
+        .gd-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 36px;
+            align-items: start;
+        }
+        .gd-head {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 54px;
+        }
+        .gd-head .eyebrow {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            opacity: 0.55;
+            margin-bottom: 10px;
+        }
+        .gd-head h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 14px;
+            line-height: 1.1;
+        }
+        .gd-head h2 em {
+            font-family: 'Dancing Script', cursive;
+            color: var(--klien-blue);
+            font-style: normal;
+        }
+        .gd-head p {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            opacity: 0.72;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .gd-nav-col {
+            position: sticky;
+            top: 100px;
+            height: 540px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            gap: 14px;
+        }
+        .gd-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 17px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(17, 17, 17, 0.07);
+            background: rgba(255, 255, 255, 0.88);
+            color: var(--text-dark);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.94rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04), 2px 2px 0 rgba(17, 17, 17, 0.04);
+            text-align: left;
+        }
+        .gd-nav-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 3px 3px 0 rgba(91, 160, 232, 0.18);
+            border-color: rgba(120, 185, 255, 0.35);
+        }
+        .gd-nav-btn.active {
+            background: rgba(120, 185, 255, 0.22);
+            border-color: rgba(91, 160, 232, 0.45);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 3px 3px 0 rgba(91, 160, 232, 0.32);
+        }
+        .gd-nav-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--coral-pink);
+            flex-shrink: 0;
+        }
+        .gd-stage {
+            position: relative;
+            height: 540px;
+            perspective: 1200px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.04);
+            user-select: none;
+        }
+        .gd-track {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+        }
+        .gd-card {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border-radius: 16px;
+            background: #fff;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.11), 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform .5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity .35s ease, box-shadow .35s ease, filter .35s ease;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        .gd-card.hidden {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .gd-card.landscape { width: 380px; height: 214px; }
+        .gd-card.portrait { width: 170px; height: 340px; }
+        .gd-card.square { width: 220px; height: 300px; }
+        .gd-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+        .gd-card.active {
+            box-shadow: 0 26px 65px rgba(0, 0, 0, 0.16), 0 6px 16px rgba(0, 0, 0, 0.08);
+            z-index: 100 !important;
+        }
+        .gd-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+        }
+        .gd-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(17, 17, 17, 0.12);
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12), 3px 3px 0 rgba(91, 160, 232, 0.3);
+            z-index: 120;
+        }
+        .gd-arrow:hover {
+            transform: translateY(-50%) scale(1.08);
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16), 4px 4px 0 rgba(91, 160, 232, 0.42);
+        }
+        .gd-arrow:active { transform: translateY(-50%) scale(0.96); }
+        .gd-prev { left: 18px; }
+        .gd-next { right: 18px; }
+        .gd-arrow svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .gd-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-dark);
+            opacity: 0.55;
+            pointer-events: none;
+        }
+        .gd-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 17, 17, 0.88);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+            padding: 40px;
+        }
+        .gd-lightbox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .gd-lb-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease, transform .2s ease;
+        }
+        .gd-lb-close:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.08); }
+        .gd-lb-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+            z-index: 10001;
+        }
+        .gd-lb-nav:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-50%) scale(1.08); }
+        .gd-lb-nav svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .gd-lb-prev { left: 24px; }
+        .gd-lb-next { right: 24px; }
+        .gd-lb-wrap {
+            max-width: 92vw;
+            max-height: 90vh;
+            overflow: auto;
+            border-radius: 8px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .gd-lb-wrap img {
+            display: block;
+            max-width: min(100%, 1200px);
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            background: #fff;
+        }
+        .gd-lb-wrap img.is-portrait {
+            max-width: min(100%, 720px);
+            max-height: none;
+        }
+        @media (max-width: 980px) {
+            .gd-container { grid-template-columns: 1fr; gap: 28px; }
+            .gd-nav-col {
+                position: static;
+                height: auto;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 6px;
+                gap: 10px;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            .gd-nav-btn { white-space: nowrap; padding: 11px 14px; font-size: 0.88rem; }
+            .gd-stage { height: 460px; }
+            .gd-card.landscape { width: 300px; height: 169px; }
+            .gd-card.portrait { width: 135px; height: 270px; }
+            .gd-card.square { width: 170px; height: 232px; }
+        }
+        @media (max-width: 560px) {
+            .gd-stage { height: 400px; }
+            .gd-card.landscape { width: 240px; height: 135px; }
+            .gd-card.portrait { width: 110px; height: 220px; }
+            .gd-card.square { width: 140px; height: 190px; }
+            .gd-arrow { width: 38px; height: 38px; }
+            .gd-arrow svg { width: 18px; height: 18px; }
+            .gd-lb-prev { left: 10px; }
+            .gd-lb-next { right: 10px; }
+            .gd-lb-nav { width: 40px; height: 40px; }
+            .gd-lb-wrap img { max-height: 64vh; }
+        }
     </style>
 </head>
 <body>
@@ -3407,6 +3740,45 @@
         </div>
     </section>
 
+    <!-- ============ 05. 电商平面设计 ============ -->
+    <section class="graphic-design-section reveal-item" id="graphic-design">
+        <div class="gd-container">
+            <div class="gd-head">
+                <div class="eyebrow">E-COMMERCE GRAPHIC DESIGN</div>
+                <h2>电商平面设计 <em>Gallery</em></h2>
+                <p>海报、Banner、详情页、首页与主图精修作品合集</p>
+            </div>
+
+            <nav class="gd-nav-col" id="gdNav" aria-label="作品分类"></nav>
+
+            <div class="gd-stage" id="gdStage" role="region" aria-label="作品轮播">
+                <div class="gd-track" id="gdTrack"></div>
+
+                <button class="gd-arrow gd-prev" id="gdPrev" aria-label="上一张">
+                    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="gd-arrow gd-next" id="gdNext" aria-label="下一张">
+                    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+
+                <div class="gd-hint">点击两侧卡片切换 · 点击中间卡片放大</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="gd-lightbox" id="gdLightbox" aria-hidden="true">
+        <button class="gd-lb-close" id="gdLbClose" aria-label="关闭灯箱">&times;</button>
+        <button class="gd-lb-nav gd-lb-prev" id="gdLbPrev" aria-label="上一张">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="gd-lb-nav gd-lb-next" id="gdLbNext" aria-label="下一张">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="gd-lb-wrap">
+            <img id="gdLbImg" src="" alt="作品大图">
+        </div>
+    </div>
+
     <!-- ============ 04.9 运营账号数据看板（毛玻璃图钉画板） ============ -->
     <section class="glass-pinboard-section reveal-item" id="pinboard">
         <div class="glass-pinboard-wrap">
@@ -4040,7 +4412,7 @@
                 if (style.display === 'none') return;
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
-                el.style.transition = `opacity 0.8s cubic-bezier(0.22,1,0.36,1) ${i * 40}ms, transform 0.9s cubic-bezier(0.34,1.56,0.64,1) ${i * 40}ms`;
+                el.style.transition = `opacity 0.8s cubic-bezier(0.22,1,0.36,1) ${Math.min(i, 16) * 35}ms, transform 0.9s cubic-bezier(0.34,1.56,0.64,1) ${Math.min(i, 16) * 35}ms`;
                 el.dataset.revealState = 'hidden';
             });
 
@@ -4060,7 +4432,7 @@
                         setTimeout(() => { el.style.transition = ''; }, 1100);
                     }
                 });
-            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            }, { threshold: 0.05, rootMargin: '0px 0px 40px 0px' });
 
             items.forEach(el => io.observe(el));
         })();
@@ -4620,6 +4992,256 @@
                 closeGallery();
             }
         });
+    })();
+    </script>
+
+    <!-- ============ 05. 电商平面设计轮播交互逻辑（轻量版） ============ -->
+    <script>
+    (() => {
+        // 30 张电商设计作品数据（index 从 0 开始对应 gd-01 ~ gd-30）
+        const gdWorks = [
+            { page: 1,  title: '电商设计作品集',        category: 'all',    type: 'landscape' },
+            { page: 2,  title: '目录 / Contents',        category: 'all',    type: 'landscape' },
+            { page: 3,  title: '海报设计',               category: 'poster', type: 'landscape' },
+            { page: 4,  title: '啤酒合成海报',           category: 'poster', type: 'landscape' },
+            { page: 5,  title: '果汁合成海报',           category: 'poster', type: 'landscape' },
+            { page: 6,  title: '脐橙水果海报',           category: 'poster', type: 'landscape' },
+            { page: 7,  title: '东坡肉餐饮海报',         category: 'poster', type: 'landscape' },
+            { page: 8,  title: 'Banner 设计',            category: 'banner', type: 'landscape' },
+            { page: 9,  title: '蓝莓 Banner',            category: 'banner', type: 'landscape' },
+            { page: 10, title: '耳机 Banner',            category: 'banner', type: 'landscape' },
+            { page: 11, title: '宠物用品 Banner',        category: 'banner', type: 'landscape' },
+            { page: 12, title: '服装 Banner',            category: 'banner', type: 'landscape' },
+            { page: 13, title: '水果茶 Banner',          category: 'banner', type: 'landscape' },
+            { page: 14, title: '详情页设计',             category: 'detail', type: 'landscape' },
+            { page: 15, title: '电动牙刷详情页',         category: 'detail', type: 'landscape' },
+            { page: 16, title: '电动牙刷详情长图',       category: 'detail', type: 'portrait' },
+            { page: 17, title: '吐司面包详情页',         category: 'detail', type: 'landscape' },
+            { page: 18, title: '吐司面包详情长图',       category: 'detail', type: 'portrait' },
+            { page: 19, title: '首页 / 女装首页',        category: 'home',   type: 'landscape' },
+            { page: 20, title: '情人节专题页',           category: 'home',   type: 'portrait' },
+            { page: 21, title: '女装首页 Mobile Web',   category: 'home',   type: 'landscape' },
+            { page: 22, title: '女装详情页长图',         category: 'detail', type: 'portrait' },
+            { page: 23, title: '情人节专题页',           category: 'home',   type: 'square' },
+            { page: 24, title: '主图 / 精修',            category: 'product',type: 'landscape' },
+            { page: 25, title: '黑咖啡主图',             category: 'product',type: 'landscape' },
+            { page: 26, title: '电器 / 美妆主图',        category: 'product',type: 'landscape' },
+            { page: 27, title: '曲奇饼主图',             category: 'product',type: 'landscape' },
+            { page: 28, title: '鼠标精修',               category: 'product',type: 'landscape' },
+            { page: 29, title: 'SK-II 精修',             category: 'product',type: 'landscape' },
+            { page: 30, title: 'Thanks for Watching',    category: 'all',    type: 'landscape' }
+        ].map(w => ({
+            ...w,
+            thumb: `https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/graphic-design/gd-${String(w.page).padStart(2,'0')}-thumb.jpg`,
+            full:  `https://ovorain-video-1258891501.cos.ap-guangzhou.myqcloud.com/assets/graphic-design/gd-${String(w.page).padStart(2,'0')}.jpg`
+        }));
+
+        const gdCategories = [
+            { id: 'all',    label: '全部作品' },
+            { id: 'poster', label: '海报设计' },
+            { id: 'banner', label: '电商 Banner' },
+            { id: 'detail', label: '详情页' },
+            { id: 'home',   label: '首页专题' },
+            { id: 'product',label: '主图精修' }
+        ];
+
+        const state = {
+            cat: 'all',
+            activeIdx: 0,
+            filtered: [],
+            autoTimer: null,
+            isHover: false,
+            lightboxOpen: false
+        };
+
+        const navEl = document.getElementById('gdNav');
+        const trackEl = document.getElementById('gdTrack');
+        const stageEl = document.getElementById('gdStage');
+        const prevBtn = document.getElementById('gdPrev');
+        const nextBtn = document.getElementById('gdNext');
+        const lightbox = document.getElementById('gdLightbox');
+        const lbImg = document.getElementById('gdLbImg');
+        const lbClose = document.getElementById('gdLbClose');
+        const lbPrev = document.getElementById('gdLbPrev');
+        const lbNext = document.getElementById('gdLbNext');
+
+        const AUTO_DELAY = 4000;
+        const WINDOW_HALF = 2;
+
+        function renderNav() {
+            navEl.innerHTML = gdCategories.map(c => `
+                <button class="gd-nav-btn ${c.id === state.cat ? 'active' : ''}" data-cat="${c.id}">
+                    <span class="gd-nav-dot"></span>
+                    <span>${c.label}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderCards() {
+            trackEl.innerHTML = gdWorks.map((w, i) => `
+                <div class="gd-card ${w.type} hidden" data-idx="${i}" aria-hidden="true">
+                    <img src="${w.thumb}" alt="${w.title}" loading="lazy">
+                </div>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            state.cat = cat;
+            state.filtered = gdWorks.reduce((acc, w, i) => {
+                if (cat === 'all' || w.category === cat) acc.push(i);
+                return acc;
+            }, []);
+            state.activeIdx = 0;
+            renderNav();
+            layout(true);
+            resetAuto();
+        }
+
+        function layout(immediate = false) {
+            const cards = Array.from(trackEl.children);
+            const activeOriginal = state.filtered[state.activeIdx];
+            if (activeOriginal == null) return;
+
+            cards.forEach((card, originalIdx) => {
+                const filteredPos = state.filtered.indexOf(originalIdx);
+                const offset = filteredPos - state.activeIdx;
+                const inWindow = Math.abs(offset) <= WINDOW_HALF;
+
+                if (!inWindow || filteredPos === -1) {
+                    card.classList.add('hidden');
+                    card.classList.remove('active');
+                    card.setAttribute('aria-hidden', 'true');
+                    return;
+                }
+
+                const abs = Math.abs(offset);
+                const x = offset * 150;
+                const scale = offset === 0 ? 1.08 : Math.max(0.72, 1 - abs * 0.13);
+                const rotateY = offset * -8;
+                const z = 100 - abs * 10;
+                const opacity = Math.max(0.45, 1 - abs * 0.22);
+                const z3d = offset === 0 ? 40 : -22 * abs;
+
+                card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateZ(${z3d}px) scale(${scale}) rotateY(${rotateY}deg)`;
+                card.style.zIndex = z;
+                card.style.opacity = opacity;
+                card.classList.remove('hidden');
+                card.setAttribute('aria-hidden', 'false');
+
+                if (offset === 0) card.classList.add('active');
+                else card.classList.remove('active');
+            });
+
+            if (immediate) {
+                cards.forEach(c => c.style.transition = 'none');
+                requestAnimationFrame(() => {
+                    cards.forEach(c => c.style.transition = '');
+                });
+            }
+        }
+
+        function setActiveFiltered(newIdx) {
+            if (state.filtered.length === 0) return;
+            state.activeIdx = (newIdx + state.filtered.length) % state.filtered.length;
+            layout();
+            resetAuto();
+        }
+
+        function next() { setActiveFiltered(state.activeIdx + 1); }
+        function prev() { setActiveFiltered(state.activeIdx - 1); }
+
+        function startAuto() {
+            stopAuto();
+            if (state.isHover || state.lightboxOpen) return;
+            state.autoTimer = setInterval(next, AUTO_DELAY);
+        }
+        function stopAuto() {
+            if (state.autoTimer) clearInterval(state.autoTimer);
+            state.autoTimer = null;
+        }
+        function resetAuto() {
+            stopAuto();
+            startAuto();
+        }
+
+        function openLightbox() {
+            const originalIdx = state.filtered[state.activeIdx];
+            const w = gdWorks[originalIdx];
+            if (!w) return;
+            lbImg.src = w.full;
+            lbImg.alt = w.title;
+            lbImg.className = w.type === 'portrait' ? 'is-portrait' : '';
+            lightbox.classList.add('show');
+            lightbox.setAttribute('aria-hidden', 'false');
+            state.lightboxOpen = true;
+            stopAuto();
+        }
+
+        function lightboxStep(dir) {
+            if (state.filtered.length <= 1) return;
+            state.activeIdx = (state.activeIdx + dir + state.filtered.length) % state.filtered.length;
+            layout();
+            openLightbox();
+        }
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+            lightbox.setAttribute('aria-hidden', 'true');
+            state.lightboxOpen = false;
+            lbImg.src = '';
+            resetAuto();
+        }
+
+        navEl.addEventListener('click', e => {
+            const btn = e.target.closest('.gd-nav-btn');
+            if (!btn) return;
+            const cat = btn.dataset.cat;
+            if (cat && cat !== state.cat) setCategory(cat);
+        });
+
+        trackEl.addEventListener('click', e => {
+            const card = e.target.closest('.gd-card');
+            if (!card) return;
+            const idx = parseInt(card.dataset.idx, 10);
+            const filteredPos = state.filtered.indexOf(idx);
+            if (filteredPos === -1) return;
+            if (filteredPos === state.activeIdx) {
+                openLightbox();
+            } else {
+                state.activeIdx = filteredPos;
+                layout();
+                resetAuto();
+            }
+        });
+
+        prevBtn.addEventListener('click', prev);
+        nextBtn.addEventListener('click', next);
+
+        stageEl.addEventListener('mouseenter', () => { state.isHover = true; stopAuto(); });
+        stageEl.addEventListener('mouseleave', () => { state.isHover = false; startAuto(); });
+
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', e => { e.stopPropagation(); lightboxStep(-1); });
+        lbNext.addEventListener('click', e => { e.stopPropagation(); lightboxStep(1); });
+        lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+        document.addEventListener('keydown', e => {
+            if (state.lightboxOpen) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') { lightboxStep(-1); e.preventDefault(); }
+                if (e.key === 'ArrowRight') { lightboxStep(1); e.preventDefault(); }
+                return;
+            }
+            const section = document.getElementById('graphic-design');
+            if (!section) return;
+            const rect = section.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight && rect.bottom > 0;
+            if (!inView) return;
+            if (e.key === 'ArrowLeft') { prev(); e.preventDefault(); }
+            if (e.key === 'ArrowRight') { next(); e.preventDefault(); }
+        });
+
+        renderCards();
+        setCategory('all');
     })();
     </script>
 </body>
