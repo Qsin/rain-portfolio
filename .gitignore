@@ -11,5 +11,13 @@ cf_prefer_local.ps1
 # 本地脚本 / 归档（敏感文件+过时文件，不公开）
 scripts/
 archive/
-# 媒体资源主走腾讯云 COS 加速；graphic-design 图同时入库作备份（避免丢失）
-# 说明：站点运行时读 COS URL，git 仅作冗余备份
+# 媒体资源统一走腾讯云 COS（站点运行时只读 COS URL，不读本地文件）
+# 重要：仓库不得纳入本地媒体——97M 媒体曾撑爆 GitHub Pages 构建导致部署卡死/回滚，
+# 线上因此长期停在旧版（定位按钮等更新无法上线）。本地媒体仅作磁盘备份，勿 git add 重新入库。
+*.mp4
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.svg
