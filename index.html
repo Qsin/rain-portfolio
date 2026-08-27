@@ -1635,8 +1635,19 @@
             background: #fff;
             color: var(--text-dark);
             white-space: nowrap;      /* tag 自身不被拆散 */
+            transition: var(--transition-smooth);
+            cursor: default;
         }
         .card-meta-tag.salary { background: #D4F63D; color: #111; }
+        .card-meta-tag.domain { background: var(--coral-pink); color: #fff; }
+        .card-meta-tag.salary:hover {
+            transform: translateY(-4px) scale(1.06) rotate(-1.5deg);
+            box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.12);
+        }
+        .card-meta-tag.domain:hover {
+            transform: translateY(-4px) scale(1.06) rotate(1.5deg);
+            box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.12);
+        }
         .card-meta-tag.site {
             background: var(--sky-blue); color: #fff;
             text-decoration: none;
@@ -3171,23 +3182,19 @@
                         </div>
                     </div>
 
-                    <!-- 简历真实联系信息（可点击拨号/发邮件/打开网站）—— 去掉「期望城市」避免重复 -->
+                    <!-- 简历真实联系信息（可点击发邮件/打开网站）—— 电话已隐藏保护隐私 -->
                     <div class="card-info-list">
                         <div class="card-info-row">
-                            <i data-lucide="phone"></i>
-                            <a href="tel:13264708200">132 6470 8200</a>
-                        </div>
-                        <div class="card-info-row">
                             <i data-lucide="mail"></i>
-                            <a href="mailto:1296115605@qq.com">1296115605@qq.com</a>
+                            <a href="mailto:c10290060@outlook.com">c10290060@outlook.com</a>
                         </div>
                     </div>
 
                     <div class="card-meta">
                         <span class="card-meta-tag salary">💰 期望薪资 5-7K</span>
-                        <a class="card-meta-tag site" href="https://ovorain.com" target="_blank" rel="noopener">
+                        <span class="card-meta-tag domain">
                             🔗 ovorain.com
-                        </a>
+                        </span>
                     </div>
                 </div>
 
@@ -3888,7 +3895,7 @@
             <div class="contact-chips reveal-item">
                 <button class="contact-chip" data-contact="wechat">
                     <span class="dot green"></span>
-                    <i data-lucide="phone"></i> 联系方式
+                    <i data-lucide="message-circle"></i> 联系方式
                     <span class="copy-bubble">WeChat：coffee7i（点击复制）</span>
                 </button>
                 <a href="#hero" class="contact-chip">
