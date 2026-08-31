@@ -4089,8 +4089,6 @@
             const grid = document.getElementById('worksGrid');
             if (!tabs.length || !grid || !pill) return;
 
-            const PREVIEW_CATS = new Set(['koubo', 'newsflow', 'vlog']);
-
             /* ---------- ① 移动胶囊滑块（Spring Morph） ---------- */
             function movePill(btn, immediate = false) {
                 // 用相对 offset 计算：btn 相对 tabsContainer 的 left / 宽度 / 按钮内高
@@ -4355,43 +4353,7 @@
                 modalWm.style.height = h + 'px';
             }
 
-            const PREVIEW_CATS = new Set(['koubo', 'newsflow', 'vlog']);
-
-            /* ---------- Hover 预览（封面为 img，悬停时动态插入 video 预览）---------- */
-            cards.forEach(card => {
-                const cat = card.getAttribute('data-cat');
-                const cover = card.querySelector('.work-cover');
-                const coverImg = cover ? cover.querySelector('img') : null;
-                const videoSrc = card.getAttribute('data-video');
-
-                if (PREVIEW_CATS.has(cat) && cover && coverImg && videoSrc) {
-                    let hoverVideo = null;
-                    // mouseenter：动态插入静音自动播放 video，覆盖在封面图上
-                    card.addEventListener('mouseenter', () => {
-                        if (!hoverVideo) {
-                            hoverVideo = document.createElement('video');
-                            hoverVideo.muted = true;
-                            hoverVideo.loop = true;
-                            hoverVideo.playsInline = true;
-                            hoverVideo.setAttribute('playsinline', '');
-                            hoverVideo.setAttribute('webkit-playsinline', '');
-                            hoverVideo.src = videoSrc;
-                            cover.appendChild(hoverVideo);
-                        }
-                        const p = hoverVideo.play();
-                        if (p && typeof p.catch === 'function') p.catch(() => {});
-                    });
-                    // mouseleave：暂停并移除 video，回到封面图
-                    card.addEventListener('mouseleave', () => {
-                        if (hoverVideo) {
-                            try { hoverVideo.pause(); } catch (_) {}
-                            hoverVideo.remove();
-                            hoverVideo = null;
-                        }
-                    });
-                }
-
-                /* ---------- 点击卡片 → 打开 Modal ---------- */
+            /* ---------- 点击卡片 → 打开 Modal ---------- */
                 card.addEventListener('click', () => {
                     const videoSrc = card.getAttribute('data-video');
                     const title = card.getAttribute('data-title') || '';
