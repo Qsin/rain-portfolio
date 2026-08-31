@@ -3032,7 +3032,9 @@
             height: auto;
             object-fit: contain;
             background: #fff;
+            transition: opacity .15s ease;
         }
+        .gd-lb-wrap img.lb-fading { opacity: 0; }
         .gd-lb-wrap img.is-portrait {
             max-width: min(100%, 720px);
             max-height: none;
@@ -5285,13 +5287,36 @@
             lightbox.setAttribute('aria-hidden', 'false');
             state.lightboxOpen = true;
             stopAuto();
+            preloadNeighbors();
+        }
+
+        function preloadNeighbors() {
+            var len = state.filtered.length;
+            if (len <= 1) return;
+            [state.activeIdx - 1, state.activeIdx + 1].forEach(function(offset) {
+                var idx = (offset + len) % len;
+                var w = gdWorks[state.filtered[idx]];
+                if (w && w.full) { var img = new Image(); img.src = w.full; }
+            });
         }
 
         function lightboxStep(dir) {
             if (state.filtered.length <= 1) return;
+            // 先淡出当前图（遮住旧内容）
+            lbImg.classList.add('lb-fading');
             state.activeIdx = (state.activeIdx + dir + state.filtered.length) % state.filtered.length;
-            layout();
-            openLightbox();
+            var originalIdx = state.filtered[state.activeIdx];
+            var w = gdWorks[originalIdx];
+            if (w) {
+                lbImg.src = w.full;          // 同帧设新 src（预加载过则瞬间完成）
+                lbImg.alt = w.title;
+                lbImg.className = w.type === 'portrait' ? 'is-portrait' : '';
+            }
+            layout();                         // 背景卡片同步切换
+            requestAnimationFrame(function() {
+                lbImg.classList.remove('lb-fading'); // 下一帧淡入新图
+            });
+            preloadNeighbors();               // 继续预加载新的相邻项
         }
         function closeLightbox() {
             lightbox.classList.remove('show');
