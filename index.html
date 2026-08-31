@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio · 新版预览</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <style>
         /* ============ 变量系统 ============ */
         :root {
@@ -3972,8 +3972,10 @@
     </div>
 
     <script>
-        // 初始化图标
-        lucide.createIcons();
+        // 初始化图标（安全守卫：unpkg/lucide 在国内可能不可达）
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
 
         /* ============================================================
          * 1. WELCOME 开屏动画 + Font Loading 防字体突变
